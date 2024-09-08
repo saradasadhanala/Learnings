@@ -1,0 +1,137 @@
+Background:
+Traditional System Administration:
+System administrators previously managed updates, security patches, and software installations on hundreds of servers using shell scripts. These scripts had to loop over each server individually.
+With the advent of cloud computing and microservices architecture, the number of servers increased, while individual compute resources per server decreased.
+Managing different operating systems (like Alpine, Ubuntu, etc.) became a challenge, as scripts often did not work consistently across distributions.
+Configuration Management Tools
+To address these challenges, configuration management tools like Puppet, Chef, and Ansible were developed.
+
+Why Choose Ansible Over Others?
+Push Mechanism: Ansible uses a push model, allowing administrators to write scripts on one instance and push updates to all worker nodes.
+Agentless: Ansible does not require an agent to be installed on each server. Administrators only need to list DNS or IP addresses of the servers in an inventory file, set up SSH password-less authentication, and ensure Python 3 is installed (which is usually default on most Linux distributions).
+Dynamic Inventory: Ansible can automatically detect new servers, which is particularly useful when creating multiple servers in a cloud environment like AWS.
+Cross-Platform Support: Ansible supports multiple operating systems, including Windows, AIX, and all Linux distributions.
+Simplicity: Ansible uses simple YAML files (known as manifests) to define configuration management tasks.
+
+Steps to Install Ansible on AWS Instance
+->Connect to your AWS instance using the command line interface (CLI).
+->Update the package list:
+    ->sudo apt update
+->Install Ansible:
+    ->sudo apt install ansible
+    
+Setting Up Password-less Authentication for Ansible:
+To manage servers without needing to enter a password every time, set up SSH password-less authentication:
+
+Create Two Instances:
+
+->Name them "Ansible Server" (the machine from which you'll run Ansible) and "Target Server" (the server you want to manage).
+Test SSH Access:
+
+From the Ansible server, try accessing the Target server:
+    ->ssh <private-ip-of-target-server>
+If you receive a "not authorized" error, follow the steps below to set up password-less authentication.
+Steps to Set Up Password-less SSH Authentication:
+Generate SSH Key on Ansible Server:
+Run the following command to generate an SSH key:
+    ->ssh-keygen
+This will create a public key (.pub file) and a private key.
+Copy the Public Key to the Target Server:
+
+Open the public key file and copy its contents.
+Generate SSH Key on Target Server:
+
+Log in to the Target server and generate keys (if not already done):
+    ->ssh-keygen
+
+Add the Ansible Server's Public Key to the Target Server:
+On the Target server, open the ~/.ssh/authorized_keys file and paste the public key copied from the Ansible server.
+Test SSH Access:
+
+From the Ansible server, run the following command to access the Target server without a password:
+    ->ssh <private-ip-of-target-server>
+***********************************************************************************************************************************************
+1. Initial Setup
+Installation:
+
+Ansible needs to be installed on the control node (your local machine or server).
+Confirm the installation by running ansible --version.
+
+Passwordless Authentication:
+Configure SSH key-based authentication to enable Ansible to connect to target servers without requiring a password for each connection.
+
+2. Understanding Ansible Playbooks
+Definition:
+Ansible Playbooks are files where you define a set of tasks for automation.
+They are analogous to scripts in other languages (e.g., shell scripts or Python scripts).
+When to Use:
+
+Use Playbooks for complex tasks involving multiple steps.
+For simple, one-off commands, Ansible Ad-Hoc Commands are sufficient.
+3. Ansible Ad-Hoc Commands
+Definition:
+
+Ad-Hoc Commands are used for executing simple tasks without writing a Playbook.
+Syntax:
+    ->ansible -i <inventory_file> <target> -m <module> -a "<arguments>"
+          -i <inventory_file>: Specifies the inventory file.
+          <target>: Specifies the target server or group of servers (e.g., all, web_servers).
+          -m <module>: Specifies the Ansible module to use (e.g., shell, copy).
+          -a "<arguments>": Provides arguments to the module.
+
+
+Examples:
+Create a file:
+    ->ansible -i inventory all -m shell -a "touch /path/to/file"
+Check disk usage:
+    ->ansible -i inventory all -m shell -a "df -h"
+Copy a file:
+    ->ansible -i inventory all -m copy -a "src=/local/path dest=/remote/path"
+
+
+4. Inventory File
+Definition:
+An inventory file contains the list of target servers and their IP addresses.
+Location: Default is /etc/ansible/hosts, but you can specify a custom location.
+Example:
+
+[web_servers]
+192.168.1.10
+192.168.1.11
+
+[db_servers]
+192.168.1.20
+192.168.1.21
+
+5. Grouping Servers
+Definition:
+Group servers in the inventory file to apply commands or playbooks to specific sets of servers.
+Usage:
+
+Execute commands on a group:
+    ->ansible -i inventory web_servers -m shell -a "command"
+
+6. Writing Ansible Playbooks
+Purpose:
+Use Playbooks to define and execute multiple tasks in a structured manner.
+Format:
+
+Playbooks are written in YAML (Yet Another Markup Language).
+
+Example:
+    - name: Install and start nginx
+      hosts: web_servers
+      tasks:
+        - name: Install nginx
+          apt:
+            name: nginx
+            state: present
+        - name: Start nginx
+          service:
+            name: nginx
+            state: started
+            
+7. Modules and Arguments
+Modules:
+Ansible modules are the building blocks for tasks (e.g., shell, copy, apt, service).
+Documentation: Refer to Ansible’s official documentation to explore available modules and their arguments.
