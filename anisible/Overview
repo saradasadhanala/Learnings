@@ -132,6 +132,7 @@ Example:
             state: started
 -------------------------
 to run: ->ansible-playbook -i inventory first_playbook.yml
+to get detailed log -> ->ansible-playbook -vvv -i inventory first_playbook.yml
 -------------------------
 7. Modules and Arguments
 Modules:
