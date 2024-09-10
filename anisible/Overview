@@ -130,7 +130,9 @@ Example:
           service:
             name: nginx
             state: started
-            
+-------------------------
+to run: ->ansible-playbook -i inventory first_playbook.yml
+-------------------------
 7. Modules and Arguments
 Modules:
 Ansible modules are the building blocks for tasks (e.g., shell, copy, apt, service).
