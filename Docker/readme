@@ -1,0 +1,18 @@
+Docker 
+https://github.com/iam-veeramalla/Docker-Zero-to-Hero/tree/main
+Bind mounts and volumes
+https://docs.docker.com/engine/storage/volumes/
+Docker Networking
+https://github.com/iam-veeramalla/Docker-Zero-to-Hero/blob/main/networking.md
+
+
+Docker commands:
+->Docker ls - to list all docker containers
+->docker network ls -> to liss all networks
+->docker run -d --name login nginx:latest -creates docker container with nginx image
+->docker exec -it login /bin/bash
+  docker exec: Executes a command inside a running container.
+  -it: Flags to run interactively (-i for interactive, -t for allocating a pseudo-TTY).
+  <container-name-or-id>: The name or ID of the running container (e.g., test).
+  /bin/bash: The command you want to run inside the container. In this case, it opens a Bash shell.
+-> apt-get install iputils-ping -y - to install ping
