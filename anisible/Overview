@@ -7,7 +7,8 @@ Configuration Management Tools
 To address these challenges, configuration management tools like Puppet, Chef, and Ansible were developed.
 
 Why Choose Ansible Over Others?
-Push Mechanism: Ansible uses a push model, allowing administrators to write scripts on one instance and push updates to all worker nodes.
+Push Mechanism: Ansible uses a push model, allowing administrators to write scripts on one instance an
+d push updates to all worker nodes.
 Agentless: Ansible does not require an agent to be installed on each server. Administrators only need to list DNS or IP addresses of the servers in an inventory file, set up SSH password-less authentication, and ensure Python 3 is installed (which is usually default on most Linux distributions).
 Dynamic Inventory: Ansible can automatically detect new servers, which is particularly useful when creating multiple servers in a cloud environment like AWS.
 Cross-Platform Support: Ansible supports multiple operating systems, including Windows, AIX, and all Linux distributions.
