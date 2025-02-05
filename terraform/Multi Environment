@@ -1,0 +1,78 @@
+ Scenario: Automated Environment Provisioning Using Terraform
+🛠 Business Problem:
+Our company needed a way to quickly and consistently spin up development, staging, and production environments for our web application.
+
+Manually provisioning environments led to inconsistencies.
+Developers often faced configuration drift between environments.
+Scaling and resource optimization were time-consuming without automation.
+✅ Solution:
+We used Terraform to automate the infrastructure provisioning process.
+
+Created reusable Terraform modules for environments.
+Used Terraform Workspaces to manage dev, staging, and prod.
+Ensured consistent configurations across all environments.
+🚀 Terraform Implementation
+1️⃣ Define a Reusable Terraform Module for EC2 Instances
+We created a Terraform module to provision an EC2 instance with required security groups, IAM roles, and a predefined AMI.
+
+h
+Copy
+Edit
+module "ec2_instance" {
+  source          = "./modules/ec2"
+  instance_type   = var.instance_type
+  ami_id         = var.ami_id
+  environment    = var.environment
+}
+2️⃣ Use Terraform Workspaces for Different Environments
+Terraform Workspaces allow us to manage multiple environments without duplicating code.
+
+sh
+Copy
+Edit
+# Create separate environments
+terraform workspace new dev
+terraform workspace new staging
+terraform workspace new production
+
+# Switch between environments
+terraform workspace select dev
+3️⃣ Variables for Environment-Specific Configurations
+Each environment (dev, staging, prod) has different instance sizes and database settings.
+
+hcl
+Copy
+Edit
+variable "instance_type" {
+  type    = string
+  default = "t2.micro"
+}
+
+variable "environment" {
+  type    = string
+  default = "dev"
+}
+4️⃣ Provision Load Balancer, Auto Scaling, and RDS
+Each environment had an ALB, Auto Scaling Group (ASG), and RDS Database configured via Terraform.
+
+hcl
+Copy
+Edit
+resource "aws_autoscaling_group" "asg" {
+  desired_capacity     = var.desired_capacity
+  min_size            = 1
+  max_size            = 5
+  launch_template {
+    id      = aws_launch_template.web.id
+    version = "$Latest"
+  }
+}
+
+resource "aws_rds_instance" "database" {
+  engine         = "mysql"
+  instance_class = var.db_instance
+  allocated_storage = 20
+  username       = "admin"
+  password       = "securepassword"
+  publicly_accessible = false
+}
