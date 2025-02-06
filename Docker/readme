@@ -1,4 +1,17 @@
 Docker 
+A Docker image is a read-only blueprint that contains the application, dependencies, and configurations needed to create a container.
+
+A Docker container is a running instance of an image. It is mutable (i.e., it can have a writable layer), and you can start, stop, or remove it.
+
+CMD :
+  -Provides a default command for the container.	
+  -Overridable?	Yes, users can override it when running the container.
+  -Syntax	CMD ["executable", "arg1", "arg2"]
+ENTRYPOINT:
+  -Defines the main executable of the container.
+	-No, unless using the --entrypoint flag.
+	-ENTRYPOINT ["executable", "arg1", "arg2"]
+
 https://github.com/iam-veeramalla/Docker-Zero-to-Hero/tree/main
 Bind mounts and volumes
 https://docs.docker.com/engine/storage/volumes/
