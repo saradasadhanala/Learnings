@@ -6,6 +6,7 @@ Managing different operating systems (like Alpine, Ubuntu, etc.) became a challe
 Configuration Management Tools
 To address these challenges, configuration management tools like Puppet, Chef, and Ansible were developed.
 
+
 Why Choose Ansible Over Others?
 Push Mechanism: Ansible uses a push model, allowing administrators to write scripts on one instance an
 d push updates to all worker nodes.
